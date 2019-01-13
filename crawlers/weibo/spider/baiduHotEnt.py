@@ -6,6 +6,7 @@ import requests
 import json
 import urllib
 import jieba.posseg as pseg
+import time
 
 from spider import Spider
 from config import callback_url

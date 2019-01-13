@@ -6,6 +6,7 @@ import requests
 import json
 import urllib
 import jieba.posseg as pseg
+import time
 
 from spider import Spider
 from config import callback_url
@@ -67,24 +68,6 @@ class BaiduHotParser(Spider):
 	          from_url = "http://" + from_url
               return images,title, from_url
 
-      '''
-      def test(self):
-	      picUrl = "http://image.baidu.com/search/index?tn=baiduimage&lm=-1&ct=201326592&cl=2&word=%B0%C2%C0%AD%B5%CF%B2%A8%D7%BC%BE%F8%C9%B1&ie=gbk"
-	      page = self.get_url(picUrl)#self.get_html(picUrl)
-	      p=re.compile("thumbURL.*?\.jpg")
-	      s=p.findall(page)
-	      print(s)
-	      soup = bs4.BeautifulSoup(page, 'lxml')  #利用soup获取网页内容
-	      div = soup.find(attrs = {"class":"grayborder"})
-              pic_html = self.download_text()
-	      #print pic_html
-	      soup_pic = bs4.BeautifulSoup(pic_html, "html.parser")
-	      div_pic = soup_pic.find(attrs = {"class":"imgpage"})
-	      #div_pic = soup_pic.find('div', class_="imgpage")
-	      print div_pic
-	      items_pic = div_pic.ul.find_all('li')
-	      print items_pic
-      '''
       def get_tags(self, keyword):
           words = pseg.cut(keyword)
 	  tags = '#%s# ' % keyword

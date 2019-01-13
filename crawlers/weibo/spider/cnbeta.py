@@ -7,6 +7,7 @@ import requests
 import os
 import random
 from config import callback_url
+import time
 
 #HOME_URL = "http://www.cnbeta.com"
 #HOME_URL = "https://www.cnbeta.com/category/funny.htm"
@@ -45,3 +46,4 @@ class CnbetaParser(Spider):
 		  self.save(title, msg, ' '.join(images), from_url, 'cnbeta')
 	       except:
 		  print "errer "
+	       time.sleep(3)

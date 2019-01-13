@@ -4,6 +4,7 @@ import random
 from spider import Spider
 from config import callback_url
 from logger import logger
+import time
 
 HOME_URL = "http://www.techweb.com.cn/roll"
 
@@ -29,3 +30,4 @@ class TechwebParser(Spider):
 			self.save(title, msg, ' '.join(images),from_url, 'techweb')
 		  except:
 		  	print "techweb error...,continue .."
+		  time.sleep(5)
