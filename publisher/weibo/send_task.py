@@ -19,12 +19,11 @@ class SendTask(Thread):
 
       def run(self):
             logger.info( "start task..." )
-            while not self.stopped.wait(TIME_SLOG):
-            #while not self.stopped.wait(random.randint(1,3) * TIME_SLOG):
+            #while not self.stopped.wait(TIME_SLOG):
+            while not self.stopped.wait(random.randint(1,3) * TIME_SLOG):
                   if True == self.sendWeibo():
 		      logger.info("send ok...")
 		      db.update(self.md5)
-		      break
 		  logger.info("repeat cause false,")
             logger.info( "end task..." )
 
