@@ -32,7 +32,7 @@ class SendTask(Thread):
 
       def get_weibo_message(self):
 	  res = db.getOne()
-	  print res[0],res[1],res[2],res[3],res[4],res[5]
+	  #print res[0],res[1],res[2],res[3],res[4],res[5]
 	  self.md5 = res[4]
 	  content = res[1]
 	  images = res[2].split(' ')
@@ -40,10 +40,10 @@ class SendTask(Thread):
 	  return weibo
 
       def sendWeibo(self):
-	    #try:
+	    try:
                 weibo = self.get_weibo_message()
                 return self.sender.send_weibo(weibo)
-	    #except:
+	    except:
 		logger.info("error to get weibo message")
 		return False
-	    #return True
+	    return True

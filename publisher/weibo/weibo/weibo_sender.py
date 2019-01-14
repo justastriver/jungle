@@ -58,9 +58,10 @@ class WeiboSender(object):
             if pid:
                 pids += " " + pid
             time.sleep(10)
-	pid = self.upload_image_stream('http://api.sanyicun.com/timg.gif')
-        if pid:
-            pids += " " + pid
+	if len(images) > 0:
+		pid = self.upload_image_stream('http://api.sanyicun.com/timg.gif')
+        	if pid:
+            		pids += " " + pid
         return pids.strip()
 
 

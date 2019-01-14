@@ -10,13 +10,13 @@ from spider.baiduHotEnt import BaiduHotEntParser
 spiders = [ 
 #          BaiduHotEntParser() ,
 #          MyBlogParser(),
-#          CnbetaParser(),
+          CnbetaParser(),
 #          CnblogParser(),
 #          MiaopaParser(),
 #          MyBlogParser(),
 #          TuicoolParser() 
           BaiduHotParser(),
-#          TechwebParser()
+          TechwebParser()
         ]
 
 
