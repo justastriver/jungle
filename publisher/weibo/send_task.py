@@ -19,6 +19,9 @@ class SendTask(Thread):
 
       def run(self):
             logger.info( "start task..." )
+            if True == self.sendWeibo():
+	         logger.info("send ok...")
+	         db.update(self.md5)
             #while not self.stopped.wait(TIME_SLOG):
             while not self.stopped.wait(random.randint(1,3) * TIME_SLOG):
                   if True == self.sendWeibo():
@@ -32,7 +35,11 @@ class SendTask(Thread):
 
       def get_weibo_message(self):
 	  res = db.getOne()
-	  #print res[0],res[1],res[2],res[3],res[4],res[5]
+	  if res is None:
+	  	print res
+	  	logger.info('none crawler content')
+	  	return None
+	  print res[0],res[1],res[2],res[3],res[4],res[5]
 	  self.md5 = res[4]
 	  content = res[1]
 	  images = res[2].split(' ')
@@ -42,7 +49,10 @@ class SendTask(Thread):
       def sendWeibo(self):
 	    try:
                 weibo = self.get_weibo_message()
-                return self.sender.send_weibo(weibo)
+	        if weibo is None:
+		   return False
+		else:
+                   return self.sender.send_weibo(weibo)
 	    except:
 		logger.info("error to get weibo message")
 		return False

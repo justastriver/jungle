@@ -8,7 +8,7 @@ from spider.baiduHot import BaiduHotParser
 from spider.baiduHotEnt import BaiduHotEntParser
 
 spiders = [ 
-#          BaiduHotEntParser() ,
+          #BaiduHotEntParser() ,
 #          MyBlogParser(),
           CnbetaParser(),
 #          CnblogParser(),
@@ -16,7 +16,7 @@ spiders = [
 #          MyBlogParser(),
 #          TuicoolParser() 
           BaiduHotParser(),
-          TechwebParser()
+          #TechwebParser()
         ]
 
 

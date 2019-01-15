@@ -6,6 +6,7 @@ import requests
 import json
 import urllib
 import jieba.posseg as pseg
+from logger import logger
 import time
 
 from spider import Spider
@@ -78,7 +79,7 @@ class BaiduHotParser(Spider):
 	  return tags
 
       def get_weibo_message(self):
-            html = self.download_text(encode='utf-8')
+            html = self.download_text(encode='gb2312')
             soup = bs4.BeautifulSoup( html, "html.parser" )
             div = soup.find(attrs={"class":"grayborder"})
 	    #print div
@@ -106,10 +107,12 @@ class BaiduHotParser(Spider):
 			images = pic_urls
 			#content=self.make_json(title, msg, images, from_url)
 			self.save(title,msg,' '.join(images), from_url,'baiduhot')
-			logger.info(content)
+			#logger.info(content)
 			print(msg)
-		  except:
+		  except Exception as e:
 		  	print "error...,continue .."
+			logger.info(e)
+
 		  time.sleep(5)
 
 if __name__ == '__main__':

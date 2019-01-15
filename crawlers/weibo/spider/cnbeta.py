@@ -8,6 +8,7 @@ import os
 import random
 from config import callback_url
 import time
+from logger import logger
 
 #HOME_URL = "http://www.cnbeta.com"
 #HOME_URL = "https://www.cnbeta.com/category/funny.htm"
@@ -44,6 +45,8 @@ class CnbetaParser(Spider):
 		  #content=self.make_json(title, msg, images, from_url)
 	          #logger.info(content)
 		  self.save(title, msg, ' '.join(images), from_url, 'cnbeta')
-	       except:
+		  print msg
+	       except Exception as e:
+	          logger.info(e)
 		  print "errer "
 	       time.sleep(3)

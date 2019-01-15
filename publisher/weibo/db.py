@@ -33,7 +33,7 @@ def getOne(source=''):
                  + " FROM " + db_table
                  + " WHERE status != 1 and source = '%s' order by pub_time desc limit 1" % (source) )
 
-        #logger.debug(sql_str)
+        logger.debug(sql_str)
 
         con = connect_wxremit_db()
 	cur = con.cursor()

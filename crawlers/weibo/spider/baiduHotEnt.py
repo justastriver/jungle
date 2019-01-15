@@ -7,6 +7,7 @@ import json
 import urllib
 import jieba.posseg as pseg
 import time
+from logger import logger
 
 from spider import Spider
 from config import callback_url
@@ -106,10 +107,11 @@ class BaiduHotEntParser(Spider):
 			images = pic_urls
 			#content=self.make_json(title, msg, images, from_url)
 			self.save(title,msg,' '.join(images), from_url,'baiduhotEnt')
-			logger.info(content)
+			#logger.info(content)
 			print(msg)
-		  except:
+		  except Exception as e:
 		  	print "error...,continue .."
+			logger.info(e)
 		  time.sleep(5)
 
 if __name__ == '__main__':

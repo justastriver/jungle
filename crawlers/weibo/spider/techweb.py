@@ -26,8 +26,8 @@ class TechwebParser(Spider):
                   	msg = "%s %s" % ( title, from_url )
 			images=[]
 			#content=self.make_json(title, msg, images, from_url)
-	                logger.info(content)
+	                #logger.info(content)
 			self.save(title, msg, ' '.join(images),from_url, 'techweb')
-		  except:
-		  	print "techweb error...,continue .."
+		  except Exception as e:
+		        logger.info(e)
 		  time.sleep(5)

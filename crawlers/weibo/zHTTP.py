@@ -1,4 +1,5 @@
 import requests
+from logger import logger
 
 
 def get(url, encode='utf-8'):
@@ -10,12 +11,15 @@ def get(url, encode='utf-8'):
 	      resp = session.get(redirect_url)
       except:
           print("err")
+      '''
       try:
           txt = resp.text.encode(resp.encoding).decode(resp.apparent_encoding)
           return txt
-      except:
-          print('resp encode err')
+      except Exception as e:
+          print('resp encode err',e)
+	  logger.info(e)
 	  return ''
+      '''
       if encode == 'utf-8':
            return resp.text.encode(resp.encoding).decode(resp.apparent_encoding)
       return resp.text.encode("latin1").decode("gbk")#.encode(encode)
