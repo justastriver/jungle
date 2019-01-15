@@ -4,6 +4,7 @@ import random
 import time
 import db
 import json
+import datetime
 
 from config import TIME_SLOG
 from weibo.weibo_sender import WeiboSender
@@ -16,6 +17,23 @@ class SendTask(Thread):
             self.stopped = Event()
             self.sender = WeiboSender( http, uid )
 	    self.md5 = ''
+      def frequence(self):
+	  now_time = datetime.datetime.now()
+	  if now_time.hour < 2:
+	       return 20 * 60 + random.randint(1,10) * 60
+	  if now_time.hour < 6:
+	       return 30 * 60 + random.randint(1,10) * 60
+	  elif now_time.hour < 10:
+	       return 15 * 60 + random.randint(1,3) * 60
+	  elif now_time.hour < 14:
+	       return 10 * 60 + random.randint(1,3) * 60
+	  elif now_time.hour < 18:
+	       return 12 * 60 + random.randint(1,3) * 60
+	  elif now_time.hour < 20:
+	       return 6 * 60 + random.randint(1,3) * 60
+	  elif now_time.hour < 24:
+	       return 10 * 60 + random.randint(1,3) * 60
+
 
       def run(self):
             logger.info( "start task..." )
@@ -23,10 +41,12 @@ class SendTask(Thread):
 	         logger.info("send ok...")
 	         db.update(self.md5)
             #while not self.stopped.wait(TIME_SLOG):
-            while not self.stopped.wait(random.randint(1,3) * TIME_SLOG):
+            counter = 0
+            while not self.stopped.wait(self.frequence()):
                   if True == self.sendWeibo():
-		      logger.info("send ok...")
+		      logger.info("send ok, counter:%s" % (counter))
 		      db.update(self.md5)
+		      counter = counter + 1
 		  logger.info("repeat cause false,")
             logger.info( "end task..." )
 
