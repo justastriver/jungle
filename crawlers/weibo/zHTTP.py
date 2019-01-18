@@ -10,7 +10,8 @@ def get(url, encode='utf-8'):
               #print "location: ", redirect_url
 	      resp = session.get(redirect_url)
       except:
-          print("err")
+          #print("err")
+          pass
       '''
       try:
           txt = resp.text.encode(resp.encoding).decode(resp.apparent_encoding)

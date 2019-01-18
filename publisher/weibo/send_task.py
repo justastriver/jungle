@@ -62,7 +62,9 @@ class SendTask(Thread):
 	  print res[0],res[1],res[2],res[3],res[4],res[5]
 	  self.md5 = res[4]
 	  content = res[1]
-	  images = res[2].split(' ')
+	  images = []
+	  if len(res[2]) > 0:
+	  	images = res[2].split(' ')
 	  weibo = WeiboMessage(content,images)
 	  return weibo
 

@@ -16,11 +16,8 @@ class SendTask(Thread):
       def run(self):
             logger.info( "start task..." )
             while not self.stopped.wait(TIME_SLOG):
-		 try:
                     spider = spider_factory.getSpider(self.idx)
                     weibo = spider.get_weibo_message()
-	         except Exception as e:
-                    logger.info(e)
 
             logger.info( "end task..." )
 

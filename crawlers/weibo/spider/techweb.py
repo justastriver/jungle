@@ -20,6 +20,8 @@ class TechwebParser(Spider):
             msg = ''
 	    for item in items:
 		  try:
+		        if item is None:
+			   continue
                   	title = item.a.string.strip()
                   	url = item.a.get( 'href' )
 			from_url = "%s%s" % (callback_url,url)
@@ -29,5 +31,5 @@ class TechwebParser(Spider):
 	                #logger.info(content)
 			self.save(title, msg, ' '.join(images),from_url, 'techweb')
 		  except Exception as e:
-		        logger.info(e)
+			logger.info('tech web %s' % (e))
 		  time.sleep(5)

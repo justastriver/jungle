@@ -90,28 +90,29 @@ class BaiduHotParser(Spider):
 	    for topItem in items:
                   try:
                         kwditem = topItem.find(attrs={"class":"keyword"})
+			if kwditem is None:
+			   continue
 			keyword = kwditem.find(attrs={"class":"list-title"}).get_text().strip()
 			linkItem = topItem.find(attrs={"class":"tc"}).find_all('a')
 			newsUrl = linkItem[0].get('href')
 			videoUrl = linkItem[1].get('href')
 			picUrl = linkItem[2].get('href')
-			print keyword
-			#print("get image url:" + picUrl)
-			#picUrl = "http://image.baidu.com/i?tn=baiduimage&lm=-1&ct=201326592&cl=2&word=%B7%AD%D2%EB%BC%D2%D5%C5%D3%F1%CA%E9%C8%A5%CA%C0&ie=gbk"
-			pic_urls ,title ,from_url = self.get_image_urls(keyword.encode('utf-8'))
-                  	#msg = "%s %s" % ( title, src_url )
-                        tags = self.get_tags(keyword)
-			emo = u"[围观][围观]"
-			from_url = "%s%s" % (callback_url,from_url)
-                  	msg = "%s , %s %s, %s" % (tags, title ,emo, from_url)
-			images = pic_urls
-			#content=self.make_json(title, msg, images, from_url)
-			self.save(title,msg,' '.join(images), from_url,'baiduhot')
-			#logger.info(content)
-			print(msg)
+			try:
+			    	pic_urls ,title ,from_url = self.get_image_urls(keyword.encode('utf-8'))
+                  		#msg = "%s %s" % ( title, src_url )
+	                        tags = self.get_tags(keyword)
+				emo = u"[围观][围观]"
+				from_url = "%s%s" % (callback_url,from_url)
+       		           	msg = "%s , %s %s, %s" % (tags, title ,emo, from_url)
+				images = pic_urls
+				#content=self.make_json(title, msg, images, from_url)
+				self.save(title,msg,' '.join(images), from_url,'baiduhot')
+			except Exception as e:
+			       logger.info('baiduhot %s' % (e))
+
 		  except Exception as e:
-		  	print "error...,continue .."
-			logger.info(e)
+		  	print "baidu hot, error...,continue .."
+			logger.info('baiduhot %s' % (e))
 
 		  time.sleep(5)
 

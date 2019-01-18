@@ -16,7 +16,7 @@ spiders = [
 #          MyBlogParser(),
 #          TuicoolParser() 
           BaiduHotParser(),
-          #TechwebParser()
+          TechwebParser()
         ]
 
 

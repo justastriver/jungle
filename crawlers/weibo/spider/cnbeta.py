@@ -28,6 +28,8 @@ class CnbetaParser(Spider):
 	    for item in items:
 	       try:
 #		  print topItem.a.string
+	          if item is None:
+		     continue
                   title = item.a.string.strip()
                   path = item.a.get( 'href' )
                   #url = HOME_URL + path
@@ -45,8 +47,7 @@ class CnbetaParser(Spider):
 		  #content=self.make_json(title, msg, images, from_url)
 	          #logger.info(content)
 		  self.save(title, msg, ' '.join(images), from_url, 'cnbeta')
-		  print msg
 	       except Exception as e:
-	          logger.info(e)
-		  print "errer "
+	          logger.info('cnbeta,%s'% (e))
+		  print "cnbeta errer "
 	       time.sleep(3)
