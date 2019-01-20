@@ -47,6 +47,7 @@ class SendTask(Thread):
 		      logger.info("send ok, counter:%s" % (counter))
 		      db.update(self.md5)
 		      counter = counter + 1
+		      continue
 		  logger.info("repeat cause false,")
             logger.info( "end task..." )
 
