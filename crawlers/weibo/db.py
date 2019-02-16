@@ -79,7 +79,8 @@ def is_published(cc2):
 
 def insert_new_pub_context(title, content, images,link, source):
 
-	md5data = hashlib.md5(content.encode('utf-8')).hexdigest()
+	#md5data = hashlib.md5(content.encode('utf-8')).hexdigest()
+	md5data = hashlib.md5(title.encode('utf-8')).hexdigest()
 	if is_published(md5data) == True:
 	   #logger.info("already published")
 	   return
