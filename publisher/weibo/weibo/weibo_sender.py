@@ -32,6 +32,9 @@ class WeiboSender(object):
         if weibo.has_image:
 	    print "waiting upload images"
             pids = self.upload_images(weibo.get_images)
+	    if pids == "":
+	       logger.info('upload image failed')
+	       return False
 	#print 'iamges: ',pids
         data = weibo.get_send_data(pids)
         self.session.headers["Referer"] = self.Referer
@@ -40,10 +43,10 @@ class WeiboSender(object):
                 "https://weibo.com/aj/mblog/add?ajwvr=6&__rnd=%d" % int( time.time() * 1000),
                 data=data
             )
-            logger.info('微博[%s]发送成功' % str(weibo))
+            logger.info('send weibo OK, content: [%s]' % str(weibo))
         except Exception as e:
             logger.debug(e)
-            logger.info( '微博[%s]发送失败' % str(weibo) )
+            logger.info( 'send weibo Failed, content: [%s]' % str(weibo) )
 	    return False
 	return True
         
@@ -57,7 +60,7 @@ class WeiboSender(object):
             pid = self.upload_image_stream(image)
             if pid:
                 pids += " " + pid
-            time.sleep(10)
+            time.sleep(2)
 	'''
 	if len(images) > 0:
 		pid = self.upload_image_stream('http://api.sanyicun.com/timg.gif')
@@ -90,6 +93,8 @@ class WeiboSender(object):
                 pid = result["data"]["pics"]["pic_1"]["pid"]
 		print "picture ok",pid
                 return pid
+	    else:
+	        logger.info('upload image stream failed, code:%s' % code) 
         except Exception as e:
             logger.info(u"图片上传失败：%s" % image_name)
 	    print e

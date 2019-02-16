@@ -17,7 +17,9 @@ class SendTask(Thread):
             self.stopped = Event()
             self.sender = WeiboSender( http, uid )
 	    self.md5 = ''
-      def frequence(self):
+      def frequence(self, cfg):
+	  if cfg == 1:
+	     return 20
 	  now_time = datetime.datetime.now()
 	  if now_time.hour < 2:
 	       return 20 * 60 + random.randint(1,10) * 60
@@ -42,12 +44,15 @@ class SendTask(Thread):
 	         db.update(self.md5)
             #while not self.stopped.wait(TIME_SLOG):
             counter = 0
-            while not self.stopped.wait(self.frequence()):
+	    cfg=0
+            while not self.stopped.wait(self.frequence(cfg)):
                   if True == self.sendWeibo():
 		      logger.info("send ok, counter:%s" % (counter))
 		      db.update(self.md5)
 		      counter = counter + 1
+		      cfg=0
 		      continue
+		  cfg=1
 		  logger.info("repeat cause false,")
             logger.info( "end task..." )
 
