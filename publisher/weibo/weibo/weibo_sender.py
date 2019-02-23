@@ -94,7 +94,8 @@ class WeiboSender(object):
 		print "picture ok",pid
                 return pid
 	    else:
-	        logger.info('upload image stream failed, code:%s' % code) 
+	        #logger.info('upload image stream failed, code:%s, %s, response:%s' % (code, image_name, resp.text)) 
+	        logger.info('upload image stream failed, code:%s, %s' % (code, image_name)) 
         except Exception as e:
             logger.info(u"图片上传失败：%s" % image_name)
 	    print e

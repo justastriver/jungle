@@ -5,17 +5,22 @@ import time
 import db
 import json
 import datetime
+import re
 
 from config import TIME_SLOG
 from weibo.weibo_sender import WeiboSender
 from weibo.weibo_message import WeiboMessage
 from logger import logger
+from weibo.weibo_login import wblogin
+
+def remove_urls (vTEXT):
+    vTEXT = re.sub(r'(https|http)?:\/\/(\w|\.|\/|\?|\=|\&|\%)*\b', '', vTEXT, flags=re.MULTILINE)
+    return(vTEXT)
 
 class SendTask(Thread):
-      def __init__(self, http, uid):
+      def __init__(self):
             Thread.__init__(self)
             self.stopped = Event()
-            self.sender = WeiboSender( http, uid )
 	    self.md5 = ''
       def frequence(self, cfg):
 	  if cfg == 1:
@@ -37,23 +42,38 @@ class SendTask(Thread):
 	       return 10 * 60 + random.randint(1,3) * 60
 
 
+      def loginCfg(self):
+    	(http, uid) = wblogin()
+    	http.get('http://weibo.com/')
+        self.sender = WeiboSender( http, uid )
+
       def run(self):
             logger.info( "start task..." )
+	    self.loginCfg()
             if True == self.sendWeibo():
 	         logger.info("send ok...")
-	         db.update(self.md5)
+	         db.update(self.md5, 1)
             #while not self.stopped.wait(TIME_SLOG):
             counter = 0
-	    cfg=0
+            err_counter = 0
+	    cfg=1
             while not self.stopped.wait(self.frequence(cfg)):
+		  if counter % 100 == 0:
+		     logger.info('success:%d, err:%d' % (counter, err_counter))
                   if True == self.sendWeibo():
 		      logger.info("send ok, counter:%s" % (counter))
-		      db.update(self.md5)
+		      db.update(self.md5, 1)#success published
 		      counter = counter + 1
 		      cfg=0
 		      continue
+		  db.update(self.md5, 2) #error published
 		  cfg=1
-		  logger.info("repeat cause false,")
+		  err_counter = err_counter + 1
+		  logger.info("repeat cause false, err counter: %d" % err_counter)
+		  if err_counter > 10: 
+		        logger.info("try to relogin cause error")
+	    		self.loginCfg()
+			time.sleep(20)
             logger.info( "end task..." )
 
       def stop(self):
@@ -68,6 +88,9 @@ class SendTask(Thread):
 	  print res[0],res[1],res[2],res[3],res[4],res[5]
 	  self.md5 = res[4]
 	  content = res[1]
+	  #remove url
+	  content = remove_urls(content)
+	  print 'after remove url ',content
 	  images = []
 	  if len(res[2]) > 0:
 	  	images = res[2].split(' ')

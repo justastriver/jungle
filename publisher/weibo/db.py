@@ -27,11 +27,11 @@ def connect_wxremit_db():
 def getOne(source=''):
         sql_str = ("SELECT title, context, images, link,md5, source"
                  + " FROM " + db_table
-                 + " WHERE status != 1 order by pub_time desc limit 1" )
+                 + " WHERE status = 0 order by pub_time desc limit 1" )
 	if source != '':
               sql_str = ("SELECT title, context, images, link, md5, source"
                  + " FROM " + db_table
-                 + " WHERE status != 1 and source = '%s' order by pub_time desc limit 1" % (source) )
+                 + " WHERE status = 0 and source = '%s' order by pub_time desc limit 1" % (source) )
 
         logger.debug(sql_str)
 
@@ -44,8 +44,8 @@ def getOne(source=''):
 
 	return row
 
-def update(cc2):
-        sql_str = ("update %s set status = 1  WHERE md5='%s'" % (db_table, cc2))
+def update(cc2, status):
+        sql_str = ("update %s set status = %d  WHERE md5='%s'" % (db_table, status, cc2))
         #logger.debug(sql_str)
 
         con = connect_wxremit_db()
